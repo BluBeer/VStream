@@ -36,8 +36,8 @@ link - https://drive.google.com/drive/folders/1Nz_dF_29FQqFmxd3x7fdgnmg9Erz_A5P?
 
 - Build and run the project
 ```
-npm start
-Frontend - Open index.html file from frontend folder
+Node server - npm start
+Frontend - Open frontend/index.html file 
 ```
 
 - Express status monitor
@@ -63,7 +63,16 @@ The folder structure of this app is explained below:
 | **app.js**         | Entry point to express app                                                               |
 | package.json             | Contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped)   | 
 
+## API 
+The API structure of this app is explained below:
 
+| API endpoint | Description |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| **/ping'**                 | Verifies the connection to node server  |
+| **/getVideoLink/:name**         | This endpoint checks for video availabilty and returns API endpoint for accessing video. This is specifically used to handle error on client side beforehand if video isn't present|                                                             |
+| **/video/:name**        | This Endpoint is used for streaming video in chunks
+| **/download-video/:name**           | This Endpoint is used for downloading video in chunks |
+| **/getViewCount/:name**           | This Endpoint returns the View Count for given video. View count here is stored in memory, which is temporary  |
 
 ### Running the build
 All the different build steps are orchestrated via [npm scripts](https://docs.npmjs.com/misc/scripts).
@@ -99,3 +108,18 @@ npm test
 
 ````
 Test files are created under test folder.
+
+### Probable failures
+```
+1. Changing IPaddr or PORT in .env should also be reflected in ipaddr variable in frontend/script.js file.
+2. Changing Database folder location should also be reflected in frontend/index.html file and .env file
+```
+
+### Test cases - 
+1. Run npm server, open frontend/index.html file.
+2. From list of videos, open same/different video in multiple tabs to verify multiple client connections
+3. Run any video, and verify with developer tools that 3 MB chunk video data is getting called multiple times.
+4. Verify Download video feature.
+5. Last video in list is not available and handles error gracefully on client and server side.
+6. Logging is done using console.logs() on server and client side.
+7. To check memory usage, CPU usage - use express status monitor which can be accessed locally - 'http://localhost:5012/status' after node server starts.
